@@ -28,7 +28,7 @@ p2pserver(serverSock)
 //               ]
 //             }
 // console.log(process.env.TURN_URL);
-var config = require('../test/ice_servers.json')
+var config = require('../ice_servers.json')
 var peerOpts = {trickle: false, config: config}
 
 test('it should support multi-way communication', function (t) {

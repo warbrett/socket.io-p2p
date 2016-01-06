@@ -21,8 +21,8 @@ exports.getIce = function(cb) {
       }
       res.pipe(concat(function(data) {
         var dataObj = JSON.parse(data)
-        var ice = dataObj.ice_servers
-        fs.writeFile('test/ice_servers.json', JSON.stringify(ice), function (err) {
+        // var ice = dataObj.ice_servers
+        fs.writeFile('test/ice_servers.json', JSON.stringify(dataObj), function (err) {
           if (err) throw err;
           console.log('Ice servers saved');
         });
