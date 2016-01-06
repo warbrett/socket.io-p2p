@@ -178,13 +178,15 @@ test.skip('it should receive utf8 multibyte characters', function (t) {
     p2p2.emit('ukranian', 'Я Б Г Д Ж Й')
     p2p2.emit('german', 'Ä ä Ü ü ß')
 
-    var finishedPeers = 0
-    function tryFinish (peer) {
-      finishedPeers++
-      if (finishedPeers === 3) {
-        p2p1.disconnect()
-        p2p2.disconnect()
-      }
-    }
+function createPeers(cb) {
+  var config = require('../ice_servers.json')
+  var peerOpts = {trickle: false, config: config}
+
+  // Stub socket.io conection
+  var sockets = {}
+  for (var i = 0; i < 3; i++) {
+    sockets['sio'+i] = {}
+    Emitter(sockets['sio'+i])
+    sockets['sio'+i].io = {engine: {id: i}}
   }
 })
