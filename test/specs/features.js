@@ -14,20 +14,21 @@ Emitter(serverSock)
 var p2pserver = require('socket.io-p2p-server').Server
 p2pserver(serverSock)
 
-var config = { "iceServers": [
-                {
-                  "url": "stun:23.21.150.121",
-                  "urls": "stun:23.21.150.121"
-                },
-                {
-                  "url": process.env.TURN_URL,
-                  "username": process.env.TURN_USER,
-                  "credential": process.env.TURN_CREDENTIAL,
-                  "urls": process.env.TURN_URL
-                }
-              ]
-            }
-console.log(process.env.TURN_URL);
+// var config = { "iceServers": [
+//                 {
+//                   "url": "stun:23.21.150.121",
+//                   "urls": "stun:23.21.150.121"
+//                 },
+//                 {
+//                   "url": process.env.TURN_URL,
+//                   "username": process.env.TURN_USER,
+//                   "credential": process.env.TURN_CREDENTIAL,
+//                   "urls": process.env.TURN_URL
+//                 }
+//               ]
+//             }
+// console.log(process.env.TURN_URL);
+var config = require('../test/ice_servers.json')
 var peerOpts = {trickle: false, config: config}
 
 test('it should support multi-way communication', function (t) {
@@ -177,16 +178,8 @@ test.skip('it should receive utf8 multibyte characters', function (t) {
     p2p2.emit('japanese', 'てすと')
     p2p2.emit('ukranian', 'Я Б Г Д Ж Й')
     p2p2.emit('german', 'Ä ä Ü ü ß')
-
-function createPeers(cb) {
-  var config = require('../ice_servers.json')
-  var peerOpts = {trickle: false, config: config}
-
-  // Stub socket.io conection
-  var sockets = {}
-  for (var i = 0; i < 3; i++) {
-    sockets['sio'+i] = {}
-    Emitter(sockets['sio'+i])
-    sockets['sio'+i].io = {engine: {id: i}}
   }
 })
+
+function createPeers(cb) {
+}
