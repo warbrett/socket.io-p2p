@@ -14,21 +14,10 @@ Emitter(serverSock)
 var p2pserver = require('socket.io-p2p-server').Server
 p2pserver(serverSock)
 
-// var config = { "iceServers": [
-//                 {
-//                   "url": "stun:23.21.150.121",
-//                   "urls": "stun:23.21.150.121"
-//                 },
-//                 {
-//                   "url": process.env.TURN_URL,
-//                   "username": process.env.TURN_USER,
-//                   "credential": process.env.TURN_CREDENTIAL,
-//                   "urls": process.env.TURN_URL
-//                 }
-//               ]
-//             }
-// console.log(process.env.TURN_URL);
 var config = require('../ice_servers.json')
+config.ice_servers[0].urls =  config.ice_servers[0].url
+config.ice_servers[1].urls =  config.ice_servers[1].url
+console.log(config)
 var peerOpts = {trickle: false, config: config}
 
 test('it should support multi-way communication', function (t) {

@@ -86,12 +86,14 @@ function Socketiop2p (socket, opts, cb) {
   })
 
   socket.on('offer', function (data) {
+    console.log('offer recieved by %s', self.peerId);
     var peerOpts = extend(self.peerOpts, {initiator: false})
     var peer = self._peers[data.fromPeerId] = new Peer(peerOpts)
     self.numConnectedClients++
     peer.setMaxListeners(50)
     self.setupPeerEvents(peer)
     peer.on('signal', function (signalData) {
+      console.log('signal from %s', self.peerId);
       var signalObj = {
         signal: signalData,
         offerId: data.offerId,
@@ -109,6 +111,7 @@ function Socketiop2p (socket, opts, cb) {
   })
 
   socket.on('peer-signal', function (data) {
+    console.log('peer signal recieved by %s', self.peerId);
     // Select peer from offerId if exists
     var peer = self._peers[data.offerId] || self._peers[data.fromPeerId]
     if (peer !== undefined) {
@@ -128,6 +131,11 @@ function Socketiop2p (socket, opts, cb) {
 
   self.on('peer_ready', function (peer) {
     self.readyPeers++
+    console.log('peer ready from %s', self.peerId);
+    console.log(self.readyPeers);
+    console.log(self.numConnectedClients);
+    console.log(self.ready);
+    console.log('');
     if (self.readyPeers >= self.numConnectedClients && !self.ready) {
       self.ready = true
       self.emit('upgrade')
@@ -147,6 +155,7 @@ Socketiop2p.prototype.setupPeerEvents = function (peer) {
   var self = this
 
   peer.on('connect', function (peer) {
+    console.log('peer connecting to %s', self.peerId);
     self.emit('peer_ready', peer)
   })
 
